@@ -9,12 +9,59 @@
 <meta name="author" content="Mac Jets LLC" />
 <link rel="canonical" href="https://flymacjets.com/" />
 
+<!-- Favicons -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+<link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png" />
+<meta name="theme-color" content="#0A1628" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How much does a private charter cost?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Every trip is quoted individually based on route, aircraft, dates, and availability. Light jets typically start around a few thousand dollars per flight hour, midsize jets run higher, and heavy jets higher still. Quotes are free and usually returned within hours." }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you own or operate the aircraft?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. Mac Jets is an independent charter broker. Every flight is operated by an FAA-certificated Part 135 direct air carrier under its own operating certificate." }
+    },
+    {
+      "@type": "Question",
+      "name": "How far in advance should I book a private jet?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Flights can be sourced on as little as 24 to 48 hours notice. For the best pricing, roughly four to six weeks out is the sweet spot." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I fly with pets on a private charter?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Most Part 135 operators welcome pets in the cabin, from lap dogs to large breeds. Aircraft are sourced with your animals in mind." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is there a membership or upfront commitment?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. No jet card, no membership fee, no deposit on file. You pay per trip and quotes are always free." }
+    }
+  ]
+}
+</script>
+
 <!-- Open Graph -->
 <meta property="og:title" content="Mac Jets — Private Charter, Sourced Directly" />
 <meta property="og:description" content="Independent private jet charter. Same aircraft, transparent pricing, direct access." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://flymacjets.com/" />
 <meta property="og:site_name" content="Mac Jets" />
+<meta property="og:image" content="https://flymacjets.com/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://flymacjets.com/og-image.png" />
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image" />
@@ -555,6 +602,31 @@
   }
 
   /* ---------- CTA ---------- */
+  /* ---------- FAQ ---------- */
+  .faq-list {
+    max-width: 720px;
+    margin-top: 48px;
+  }
+  .faq-item {
+    padding: 28px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .faq-item:first-child { border-top: 1px solid var(--rule); }
+  .faq-q {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 20px;
+    letter-spacing: -0.01em;
+    margin-bottom: 10px;
+    color: var(--ink);
+  }
+  .faq-a {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    max-width: 640px;
+  }
+
   .cta-section {
     background: var(--paper-warm);
     text-align: center;
@@ -771,10 +843,10 @@
     <div class="hero-eyebrow reveal">Independent · Direct · Transparent</div>
     <h1 class="reveal delay-1">
       Private aviation,<br/>
-      <em>without the markup.</em>
+      <em>without the layers.</em>
     </h1>
     <p class="hero-sub reveal delay-2">
-      Same aircraft. Same operators. Sourced directly through me, not buried under three layers of brokerage. Send me a route — I'll send back options in hours.
+      Same aircraft. Same operators. Sourced directly through me, not routed through a sales floor. Send me a route — I'll send back options in hours.
     </p>
     <div class="hero-cta-row reveal delay-3">
       <a href="#quote" class="btn-primary">
@@ -833,7 +905,7 @@
         <textarea id="notes" name="notes" placeholder="Return date, baggage, pets, preferences..."></textarea>
       </div>
       <button type="submit" class="form-submit">Send request</button>
-      <p class="form-note">Or email <a href="mailto:matt@dashhaviation.com" style="color:var(--accent); text-decoration:none;">matt@dashhaviation.com</a></p>
+      <p class="form-note">Or text me directly at <a href="sms:+17036380701" style="color:var(--accent); text-decoration:none;">+1 (703) 638-0701</a> · email <a href="mailto:matt@dashhaviation.com" style="color:var(--accent); text-decoration:none;">matt@dashhaviation.com</a></p>
     </form>
   </div>
 </section>
@@ -844,7 +916,7 @@
     <span class="section-eyebrow">Why Mac Jets</span>
     <h2 class="section-title">A leaner way to <em>fly private.</em></h2>
     <p class="section-sub">
-      The charter industry is built on layers. Mac Jets cuts through them. You get the same aircraft, sourced from the same operators, at a price that reflects what the plane actually costs to fly.
+      The charter industry is built on layers — sales floors, marketing teams, ad budgets, downtown offices — and every one of them shows up in your quote. Mac Jets cuts through them. Same aircraft, same operators, at a price that reflects what the plane actually costs to fly.
     </p>
   </div>
   <div class="values-grid">
@@ -856,12 +928,12 @@
     <div class="value-card scroll-fade">
       <div class="value-num">ii.</div>
       <div class="value-title">Transparent pricing</div>
-      <p class="value-body">Quotes itemized line by line: aircraft cost, fuel, FET, segment tax, brokerage fee. No mystery markups, no surprise add-ons at billing.</p>
+      <p class="value-body">All-in quotes with every tax and fee shown up front. The number you approve is the number you pay — no surprise add-ons at billing.</p>
     </div>
     <div class="value-card scroll-fade">
       <div class="value-num">iii.</div>
       <div class="value-title">Same fleet, less margin</div>
-      <p class="value-body">I source from the exact operators the major brokerages use. The difference is what gets stacked on top — I keep margins lean and pass it through.</p>
+      <p class="value-body">I source from the exact operators the major brokerages use. The difference is what their price carries — sales teams, sponsorships, client dinners, quarterly targets. Mine carries one broker and a phone.</p>
     </div>
   </div>
 </section>
@@ -881,7 +953,7 @@
     <div class="step scroll-fade">
       <div class="step-num">02 —</div>
       <div class="step-title">I source options</div>
-      <p class="step-body">Within hours you get 2–3 vetted aircraft options across categories, with all-in pricing and operator details.</p>
+      <p class="step-body">Within hours you get 2–3 vetted aircraft options across categories, with all-in pricing and aircraft details. Every operator is FAA Part 135 certificated and screened for safety ratings.</p>
     </div>
     <div class="step scroll-fade">
       <div class="step-num">03 —</div>
@@ -906,7 +978,7 @@
   <div class="compare">
     <div class="compare-col scroll-fade">
       <div class="compare-label">Traditional brokerage</div>
-      <div class="compare-name">15–25% markup, layered.</div>
+      <div class="compare-name">Layered. Slow. Opaque.</div>
       <ul class="compare-list">
         <li>Quote bounced between sales rep, manager, ops</li>
         <li>Markup stacked at each layer</li>
@@ -921,9 +993,9 @@
       <div class="compare-name">Lean. Direct. Transparent.</div>
       <ul class="compare-list">
         <li>One person, quote to landing</li>
-        <li>Single transparent commission</li>
+        <li>One lean margin, not a stack of them</li>
         <li>Direct cell, direct email, always</li>
-        <li>Itemized quote, every charge listed</li>
+        <li>One all-in number, locked before you fly</li>
         <li>Quotes back same day, often within hours</li>
         <li>Catering and ground tailored per trip</li>
       </ul>
@@ -943,7 +1015,7 @@
     <div class="about-body scroll-fade">
       <span class="section-eyebrow">About</span>
       <h2 class="section-title">Built by a broker who got <em>tired of the script.</em></h2>
-      <p>I spent years inside the major charter brokerages — selling jet cards, booking trips, watching clients get charged 20% more than they needed to so the company could expand its sales team.</p>
+      <p>I spent years inside the major charter brokerages — selling jet cards, booking trips, watching clients pay more than they needed to so the company could expand its sales team.</p>
       <p>Mac Jets is the alternative. No corporate overhead. No script. Just direct access to a broker who knows the operators, knows the aircraft, and works for the client — not a quarterly target.</p>
       <p>If you're tired of being passed around, send me a trip. I think you'll see the difference.</p>
       <div class="about-sig">
@@ -954,12 +1026,46 @@
   </div>
 </section>
 
+<!-- FAQ -->
+<section id="faq">
+  <div class="scroll-fade">
+    <span class="section-eyebrow">FAQ</span>
+    <h2 class="section-title">Common <em>questions.</em></h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <h3 class="faq-q">How much does a private charter cost?</h3>
+        <p class="faq-a">Every trip is quoted individually based on route, aircraft, dates, and availability. As a rough guide, light jets typically start around a few thousand dollars per flight hour, midsize jets run higher, and heavy jets higher still. Send me a route and I'll give you a real number, usually within hours.</p>
+      </div>
+      <div class="faq-item">
+        <h3 class="faq-q">Do you own or operate the aircraft?</h3>
+        <p class="faq-a">No. I'm an independent charter broker. Every flight is operated by an FAA-certificated Part 135 direct air carrier under its own operating certificate. My job is sourcing the right aircraft at the right price and managing the trip end to end.</p>
+      </div>
+      <div class="faq-item">
+        <h3 class="faq-q">How far in advance should I book?</h3>
+        <p class="faq-a">I can source flights on as little as 24 to 48 hours notice. For the best pricing, roughly four to six weeks out is the sweet spot — close enough that operators know their schedules, far enough that availability is still open.</p>
+      </div>
+      <div class="faq-item">
+        <h3 class="faq-q">Can I fly with pets?</h3>
+        <p class="faq-a">Yes. Most operators welcome pets in the cabin, from lap dogs to large breeds. Tell me about your animals when you send the trip and I'll source aircraft accordingly.</p>
+      </div>
+      <div class="faq-item">
+        <h3 class="faq-q">What happens if the aircraft has a mechanical issue?</h3>
+        <p class="faq-a">It's rare, but it happens in aviation. If an aircraft becomes unavailable, I work with the operator network to source a comparable replacement as fast as possible, under terms spelled out in your charter agreement before you ever fly.</p>
+      </div>
+      <div class="faq-item">
+        <h3 class="faq-q">Is there a membership or upfront commitment?</h3>
+        <p class="faq-a">No. No jet card, no membership fee, no deposit on file. You pay per trip, and quotes are always free.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- CTA -->
 <section class="cta-section">
   <div class="scroll-fade">
     <span class="section-eyebrow">Ready when you are</span>
     <h2 class="section-title">Send a trip. <em>I'll handle the rest.</em></h2>
-    <p class="section-sub">Quotes back in hours. No commitment, no contracts, no minimums.</p>
+    <p class="section-sub">Quotes back in hours. No commitment, no membership, no minimums.</p>
     <a href="#quote" class="btn-primary" style="margin-top: 24px;">
       Request a quote
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -990,6 +1096,8 @@
         <li><a href="#how">How it works</a></li>
         <li><a href="#difference">The difference</a></li>
         <li><a href="#about">About</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="/blog/jet-card-vs-charter.html">Articles</a></li>
         <li><a href="#quote">Request a quote</a></li>
       </ul>
     </div>
@@ -1044,7 +1152,7 @@
         headers: { 'Accept': 'application/json' }
       });
       if (response.ok) {
-        form.innerHTML = '<div style="text-align:center; padding:40px 20px;"><div style="font-family:Fraunces,serif; font-size:24px; color:var(--accent); margin-bottom:12px;">Request received.</div><div style="color:var(--ink-soft); font-size:15px; line-height:1.6;">I\'ll be in touch within a few hours.<br/>For anything urgent: <a href="mailto:matt@dashhaviation.com" style="color:var(--accent); text-decoration:none;">matt@dashhaviation.com</a></div></div>';
+        form.innerHTML = '<div style="text-align:center; padding:40px 20px;"><div style="font-family:Fraunces,serif; font-size:24px; color:var(--accent); margin-bottom:12px;">Request received.</div><div style="color:var(--ink-soft); font-size:15px; line-height:1.6;">I\'ll be in touch within a few hours.<br/>For anything urgent, text me: <a href="sms:+17036380701" style="color:var(--accent); text-decoration:none;">+1 (703) 638-0701</a></div></div>';
       } else {
         throw new Error('Submission failed');
       }
