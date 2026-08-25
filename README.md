@@ -68,4 +68,4 @@ OR
 - Site is mobile-responsive
 - Uses Google Fonts (Fraunces + Inter)
 - Form submissions go to Formspree → matt@dashhaviation.com
-- All SEO meta tags, Open Graph, sitemap, robots.txt configured for flymacjets.com
+- Canonical host is https://www.flymacjets.com; quote form posts to https://formspree.io/f/xdaboyel
