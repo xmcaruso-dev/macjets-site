@@ -113,9 +113,8 @@
     .footer-links { display:flex; gap:22px; }
     .footer-links a { color:white; text-underline-offset:4px; }
     .fine { max-width:850px; border-top:1px solid rgba(255,255,255,.12); padding-top:24px; }
-    .reveal { opacity:0; transform:translateY(20px); transition:opacity .65s ease,transform .65s ease; }
-    .reveal.visible { opacity:1; transform:none; }
-    @media (prefers-reduced-motion:reduce) { html{scroll-behavior:auto}.ticker-track{animation:none}.reveal{opacity:1;transform:none;transition:none} }
+    .reveal { opacity:1; transform:none; }
+    @media (prefers-reduced-motion:reduce) { html{scroll-behavior:auto}.ticker-track{animation:none} }
     @media (max-width:850px) {
       .nav-links a:not(.pill){display:none}.hero{padding-top:64px}.hero-grid,.section-head,.story-grid,.guide-card,.contact-grid{grid-template-columns:1fr}.hero-grid{min-height:auto;gap:62px}.section-head,.story-grid{gap:38px}.cards{grid-template-columns:1fr}.card,.card+.card{padding:28px 0;border-right:0;border-bottom:1px solid var(--line);min-height:auto}.card h3{margin-top:24px}.proof{grid-template-columns:1fr 1fr}section{padding:78px 0}.portrait-standin{min-height:400px}.guide-side{min-height:260px}.contact-grid{align-items:start}
     }
@@ -191,9 +190,5 @@
     </div>
   </footer>
 
-  <script>
-    const observer=new IntersectionObserver((entries)=>entries.forEach((entry)=>{if(entry.isIntersecting)entry.target.classList.add('visible')}),{threshold:.12});
-    document.querySelectorAll('.reveal').forEach((element)=>observer.observe(element));
-  </script>
 </body>
 </html>
