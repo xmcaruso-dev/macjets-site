@@ -1,18 +1,6 @@
 {
   "redirects": [
     {
-      "source": "/:path*",
-      "has": [{ "type": "host", "value": "flymacjets.com" }],
-      "destination": "https://jetwithmatt.com/:path*",
-      "statusCode": 308
-    },
-    {
-      "source": "/:path*",
-      "has": [{ "type": "host", "value": "www.flymacjets.com" }],
-      "destination": "https://jetwithmatt.com/:path*",
-      "statusCode": 308
-    },
-    {
       "source": "/index.html",
       "destination": "/",
       "statusCode": 308
