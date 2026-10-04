@@ -1,43 +1,31 @@
 {
   "redirects": [
     {
-      "source": "/index.html",
+      "source": "/:path*",
       "has": [{ "type": "host", "value": "flymacjets.com" }],
-      "destination": "https://www.flymacjets.com/",
-      "statusCode": 301
-    },
-    {
-      "source": "/blog",
-      "has": [{ "type": "host", "value": "flymacjets.com" }],
-      "destination": "https://www.flymacjets.com/blog/jet-card-vs-charter.html",
-      "statusCode": 301
-    },
-    {
-      "source": "/blog/",
-      "has": [{ "type": "host", "value": "flymacjets.com" }],
-      "destination": "https://www.flymacjets.com/blog/jet-card-vs-charter.html",
-      "statusCode": 301
+      "destination": "https://jetwithmatt.com/:path*",
+      "statusCode": 308
     },
     {
       "source": "/:path*",
-      "has": [{ "type": "host", "value": "flymacjets.com" }],
-      "destination": "https://www.flymacjets.com/:path*",
-      "statusCode": 301
+      "has": [{ "type": "host", "value": "www.flymacjets.com" }],
+      "destination": "https://jetwithmatt.com/:path*",
+      "statusCode": 308
     },
     {
       "source": "/index.html",
       "destination": "/",
-      "statusCode": 301
+      "statusCode": 308
     },
     {
       "source": "/blog",
       "destination": "/blog/jet-card-vs-charter.html",
-      "statusCode": 301
+      "statusCode": 308
     },
     {
       "source": "/blog/",
       "destination": "/blog/jet-card-vs-charter.html",
-      "statusCode": 301
+      "statusCode": 308
     }
   ]
 }
