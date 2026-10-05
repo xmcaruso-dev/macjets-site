@@ -266,17 +266,39 @@ footer p { margin: 0 0 8px; max-width: 60em; }
 .pass { transition: transform .4s cubic-bezier(.2,.7,.2,1), box-shadow .4s ease; }
 .pass:hover { transform: translateY(-4px); }
 
-/* Scroll reveals, varied by section */
-.js .reveal {
-  opacity: 0; transform: translateY(20px);
-  transition: opacity .7s ease, transform .8s cubic-bezier(.2,.7,.2,1);
-  transition-delay: calc(var(--d, 0) * 100ms);
+/* Scroll reveals: stagger within each group, keep every section readable. */
+.motion-ready .reveal {
+  opacity: 0; transform: translate3d(0, 44px, 0);
+  transition: opacity .7s ease, transform .95s cubic-bezier(.16,1,.3,1);
+  transition-delay: calc(var(--d, 0) * 85ms);
 }
-.js .reveal.in { opacity: 1; transform: none; }
-.js .exp-item.reveal { transform: translateX(-32px); }
-.js .exp-item.reveal.in { transform: none; }
-.js .portrait.reveal { transform: scale(.94); }
-.js .portrait.reveal.in { transform: none; }
+.motion-ready .reveal.in { opacity: 1; transform: none; }
+.motion-ready .exp-item.reveal { transform: translate3d(42px, 16px, 0); }
+.motion-ready .portrait.reveal { transform: translate3d(-40px, 28px, 0) scale(.94); }
+.motion-ready .exp-item.reveal.in, .motion-ready .portrait.reveal.in { transform: none; }
+.motion-ready .exp-item.reveal.in:hover { transform: translateX(10px); }
+.motion-ready .shot.reveal { transform: translate3d(0, 64px, 0) rotate(calc(var(--r, 0deg) * 1.6)) scale(.94); }
+.motion-ready .shot.reveal.in { transform: rotate(var(--r, 0deg)); }
+.motion-ready .shot.reveal.in:hover { transform: rotate(0deg) scale(1.04); }
+.motion-ready .tile.reveal.in:hover { transform: translateY(-6px); }
+.motion-ready .qa details.reveal { transform: translate3d(24px, 20px, 0); }
+.motion-ready .qa details.reveal.in { transform: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .portrait img, .shot img { translate: 0 var(--scroll-drift, 0px); scale: 1.08; }
+  .steps li { position: relative; }
+  .steps li::before {
+    content: ""; position: absolute; top: -2px; left: 0; right: 0; height: 2px;
+    background: var(--orange); transform: scaleX(0); transform-origin: left;
+    transition: transform 1s cubic-bezier(.16,1,.3,1) .15s;
+  }
+  .steps li.in::before { transform: scaleX(1); }
+}
+@media (max-width: 600px) {
+  .motion-ready .reveal { transform: translate3d(0, 30px, 0); }
+  .motion-ready .exp-item.reveal, .motion-ready .qa details.reveal { transform: translate3d(0, 30px, 0); }
+  .motion-ready .reveal.in { transform: none; }
+  .motion-ready .shot.reveal.in { transform: rotate(var(--r, 0deg)); }
+}
 .steps .n { transition: background .4s ease .3s, color .4s ease .3s; }
 .steps li.in .n { background: var(--blue); color: #fff; animation: pop .6s .3s cubic-bezier(.3,1.6,.5,1); }
 @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.22); } 100% { transform: scale(1); } }
@@ -293,7 +315,8 @@ footer p { margin: 0 0 8px; max-width: 60em; }
 }
 @media (prefers-reduced-motion: reduce) {
   .plane { display: none; }
-  .js .reveal, .js .exp-item.reveal, .js .portrait.reveal { opacity: 1; transform: none; transition: none; }
+  .motion-ready .reveal, .motion-ready .exp-item.reveal, .motion-ready .portrait.reveal,
+  .motion-ready .shot.reveal, .motion-ready .qa details.reveal { opacity: 1; transform: none; transition: none; }
   .js .compare:not(.in)::before, .js .exp-item:not(.in)::before { transform: none; }
   .w > span { transform: none; animation: none; }
   .stamp.show { animation: none; opacity: 1; }
@@ -564,7 +587,7 @@ footer p { margin: 0 0 8px; max-width: 60em; }
   <div class="wrap hero-grid">
     <div>
       <h1>Private jet charter, booked by one person you can call.</h1>
-      <p class="lede">I'm Matt Caruso, a charter and jet card specialist in Fort Lauderdale. Tell me where you're going and when. I'll find the right aircraft and send you options that fit the trip.</p>
+      <p class="lede">I'm Matt Caruso, a charter and jet card specialist in Fort Lauderdale. Tell me where you're going and when. I'll find the aircraft and talk you through your options in plain English.</p>
       <div class="byline">
         <div class="dot-avatar"><span aria-hidden="true">MC</span><img src="avatar.jpg" decoding="async" alt="" onerror="this.remove()"></div>
         <div><strong>Matt Caruso</strong><br>Charter broker with jets.com</div>
@@ -632,13 +655,13 @@ footer p { margin: 0 0 8px; max-width: 60em; }
   <div class="wrap about-grid">
     <div class="portrait">
       <span class="initials" aria-hidden="true">MC</span>
-      <!-- Photos are embedded below, so index.html works on its own. -->
+      <!-- Native photo assets keep the page fast and the images clear. -->
       <img src="matt.jpg" decoding="async" loading="lazy" alt="Matt Caruso seated in a private jet cabin" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='avatar.jpg'}else{this.remove()}">
     </div>
     <div class="letter">
       <h2 class="big">Who you're working with</h2>
-      <p>I'm a charter and jet card specialist. My job is to take the guesswork out of flying private: finding the right aircraft, laying out your options in plain language, and handling the details so nothing surprises you.</p>
-      <p>Some clients fly a few times a year, others fly every month. I'll give you a straight answer on whether charter, a jet card, or a mix fits how you actually fly.</p>
+      <p>You don't need to know every aircraft or jet card program. That's my job. Tell me what matters to you, and I'll walk you through what makes sense.</p>
+      <p>A few trips a year or every month, I'll give you a straight answer on charter, a jet card, or a mix. We'll start with how you actually fly.</p>
       <p>I'm based in Fort Lauderdale and book flights anywhere you need to go.</p>
       <div class="sign">Matt</div>
     </div>
@@ -649,7 +672,7 @@ footer p { margin: 0 0 8px; max-width: 60em; }
   <div class="wrap exp-grid">
     <div>
       <h2 class="big">Charter and jet cards are what I do.</h2>
-      <p class="exp-lede">Most people don't fly private often enough to know what a good deal looks like. I do, and I'll show you.</p>
+      <p class="exp-lede">There's a lot of fine print in private aviation. I'll go through it with you and give you a straight answer.</p>
     </div>
     <div class="exp-list">
       <div class="exp-item">
@@ -662,7 +685,7 @@ footer p { margin: 0 0 8px; max-width: 60em; }
       </div>
       <div class="exp-item">
         <h3>I match the aircraft to the trip</h3>
-        <p>Four people on a short hop and a long-haul trip with luggage need different planes. I pick the aircraft for the trip, not the other way around.</p>
+        <p>A quick hop and a long-haul trip need different planes. I'll factor in the route, the people, and the luggage. Your bags get a vote, too.</p>
       </div>
       <div class="exp-item">
         <h3>I stay on it when plans change</h3>
@@ -687,7 +710,7 @@ footer p { margin: 0 0 8px; max-width: 60em; }
         <div class="n">2</div>
         <div>
           <h3>I find your options</h3>
-          <p>I check availability and send you a short list of aircraft options, so you can compare them side by side.</p>
+          <p>I check what's available, send you a short list, and explain why each aircraft makes sense for your trip.</p>
         </div>
       </li>
       <li>
@@ -701,11 +724,11 @@ footer p { margin: 0 0 8px; max-width: 60em; }
   </div>
 </section>
 
-<!-- Reel tiles use the embedded photos. -->
+<!-- Reel tiles link to Matt's Instagram videos. -->
 <section class="gallery" id="photos">
   <div class="wrap">
     <h2 class="big">Along for the ride.</h2>
-    <p class="jc-lede">A look at life around the aircraft. More on Instagram and TikTok.</p>
+    <p class="jc-lede">The aircraft, the cabins, and a little behind the scenes. More on Instagram and TikTok.</p>
     <div class="shots">
       <a class="shot reel" href="https://www.instagram.com/jetwithmatt/reel/DeAg8XKjIGh/" target="_blank" rel="noopener" aria-label="Watch reel on Instagram: Walking up to board">
         <img src="photos/boarding.jpg" decoding="async" loading="lazy" alt="Matt boarding a private jet" onerror="this.remove()">
@@ -803,7 +826,7 @@ footer p { margin: 0 0 8px; max-width: 60em; }
   <div class="wrap follow-grid">
     <div>
       <h2 class="big">Follow along.</h2>
-      <p class="jc-lede">I'm on Instagram and TikTok as @jetwithmatt. Come say hi.</p>
+      <p class="jc-lede">More planes, a little behind the scenes, and me being me. Find @jetwithmatt on Instagram and TikTok. Come say hi.</p>
     </div>
     <div class="tiles">
       <a class="tile" href="https://www.instagram.com/jetwithmatt/" target="_blank" rel="noopener">
@@ -825,7 +848,7 @@ footer p { margin: 0 0 8px; max-width: 60em; }
   <span class="streak" style="top:74%;--t:10s;--dl:6s" aria-hidden="true"></span>
   <div class="wrap">
     <h2 class="big">Send me the trip.</h2>
-    <p>You'll hear from me directly with options.</p>
+    <p>Tell me where, when, and who's coming. I'll get back to you myself.</p>
     <div class="actions">
       <a class="btn-light" href="#quote">Request a quote</a>
       <a class="btn-line" id="emailLink" href="mailto:jetwithmatt@proton.me?subject=Charter%20quote%20request">Email Matt</a>
@@ -937,35 +960,51 @@ footer p { margin: 0 0 8px; max-width: 60em; }
       return '<span class="w" aria-hidden="true"><span style="--i:' + i + '">' + w + '</span></span>';
     }).join(" ");
   }
-  var targets = document.querySelectorAll(".letter > *, .portrait, .exp-grid > div:first-child > *, .exp-item, .steps li, .trip-list > div, .jc-grid > div, .follow-grid > div:first-child > *, .tiles > a, .gallery .shot, .faq-grid > *");
-  var groupCount = {};
+  var targets = document.querySelectorAll(".letter > *, .portrait, .exp-grid > div:first-child > *, .exp-item, #how h2, .steps li, .trips h2, .trip-list > div, .jc-grid > div:first-child > *, .compare, .follow-grid > div:first-child > *, .tiles > a, .gallery h2, .gallery .jc-lede, .gallery .shot, .faq h2, .qa details, .cta .wrap > *");
+  var groupCount = new Map();
   Array.prototype.forEach.call(targets, function (el) {
     el.classList.add("reveal");
-    var key = el.parentElement.className || "x";
-    groupCount[key] = (groupCount[key] || 0);
-    el.style.setProperty("--d", Math.min(groupCount[key]++, 6));
+    var parent = el.parentElement;
+    var index = groupCount.get(parent) || 0;
+    el.style.setProperty("--d", Math.min(index, 3));
+    groupCount.set(parent, index + 1);
   });
   if ("IntersectionObserver" in window && !calm) {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
         if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
       });
-    }, { threshold: 0.18, rootMargin: "0px 0px -6% 0px" });
+    }, { threshold: 0.08, rootMargin: "0px 0px -5% 0px" });
+    document.documentElement.classList.add("motion-ready");
     Array.prototype.forEach.call(targets, function (el) { io.observe(el); });
+    // Keyboard focus should never land on a visually hidden link.
+    document.addEventListener("focusin", function (event) {
+      var el = event.target.closest(".reveal");
+      if (el) { el.classList.add("in"); io.unobserve(el); }
+    });
   } else {
     Array.prototype.forEach.call(targets, function (el) { el.classList.add("in"); });
   }
 
   // Flight progress bar
   var fb = document.getElementById("flightbar");
+  var driftImages = calm ? [] : document.querySelectorAll(".portrait img, .shot img");
   var ticking = false;
   function setProgress() {
     var max = document.documentElement.scrollHeight - window.innerHeight;
     fb.style.setProperty("--p", max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0);
+    Array.prototype.forEach.call(driftImages, function (img) {
+      var rect = img.parentElement.getBoundingClientRect();
+      if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+      var distance = (rect.top + rect.height / 2 - window.innerHeight / 2) * -.035;
+      img.style.setProperty("--scroll-drift", Math.max(-12, Math.min(12, distance)).toFixed(1) + "px");
+    });
     ticking = false;
   }
   window.addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(setProgress); } }, { passive: true });
   setProgress();
+  window.addEventListener("resize", setProgress);
+  window.addEventListener("load", setProgress);
 
   // Boarding pass tilts toward the pointer
   var pass = document.getElementById("quote");
