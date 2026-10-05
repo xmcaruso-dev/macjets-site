@@ -118,13 +118,13 @@ h1 {
 .route .swap { padding-bottom: 12px; color: var(--blue); font-weight: 800; }
 .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
 label { display: block; font-size: 14px; font-weight: 700; margin-bottom: 6px; color: var(--ink-soft); }
-input, select {
+input, select, textarea {
   width: 100%; font: inherit; font-weight: 600; color: var(--ink);
   background: var(--paper); border: 1.5px solid var(--line); border-radius: 10px;
   padding: 12px 13px; min-height: 48px;
 }
 input::placeholder { color: #8a9bab; font-weight: 500; }
-input:focus, select:focus { border-color: var(--blue); outline: none; box-shadow: 0 0 0 3px rgba(31,86,214,.24); }
+input:focus, select:focus, textarea:focus { border-color: var(--blue); outline: none; box-shadow: 0 0 0 3px rgba(31,86,214,.24); }
 .tear {
   position: relative; height: 0; border-top: 2px dashed var(--line); margin: 0 22px;
 }
@@ -140,6 +140,8 @@ input:focus, select:focus { border-color: var(--blue); outline: none; box-shadow
   background: var(--orange); color: #10243a; padding: 16px 20px; border-radius: 12px;
   transition: background .15s ease;
 }
+.btn:disabled { opacity: .65; cursor: wait; }
+textarea { resize: vertical; min-height: 92px; }
 .btn:hover { background: var(--blue); color: #fff; }
 .fine { font-size: 13.5px; color: var(--ink-soft); margin: 12px 0 0; }
 .status { margin: 12px 0 0; font-size: 15px; font-weight: 700; color: var(--blue); }
@@ -569,8 +571,9 @@ footer p { margin: 0 0 8px; max-width: 60em; }
       </div>
     </div>
 
-    <form class="pass" id="quote" novalidate>
-      <div class="stamp" id="stamp" aria-hidden="true">Cleared for takeoff</div>
+    <form class="pass" id="quote" action="https://formspree.io/f/xdaboyel" method="POST">
+      <input type="hidden" name="_subject" value="Jet With Matt flight request">
+      <div class="stamp" id="stamp" aria-hidden="true">Request received</div>
       <div class="pass-main">
         <div class="pass-head"><h2>Where to?</h2><span>Takes under a minute</span></div>
         <div class="route">
@@ -608,12 +611,16 @@ footer p { margin: 0 0 8px; max-width: 60em; }
             <input id="contact" name="contact" autocomplete="email" required>
           </div>
         </div>
+        <div style="margin-top: 14px;">
+          <label for="details">Trip details (optional)</label>
+          <textarea id="details" name="details" rows="3" placeholder="Return date, extra stops, luggage, pets, or special requests"></textarea>
+        </div>
       </div>
       <div class="tear" aria-hidden="true"></div>
       <div class="pass-stub">
         <button class="btn" type="submit">Request my quote</button>
         <p class="status" id="status" role="status" hidden></p>
-        <p class="fine">Round trip or multi-leg? Add the details in the email that opens.</p>
+        <p class="fine">Send your request here. I’ll follow up directly with options.</p>
       </div>
     </form>
   </div>
@@ -861,41 +868,63 @@ footer p { margin: 0 0 8px; max-width: 60em; }
   var form = document.getElementById("quote");
   var status = document.getElementById("status");
   var stamp = document.getElementById("stamp");
+  var submitButton = form.querySelector('button[type="submit"]');
+  var submitting = false;
   form.addEventListener("input", function () { stamp.classList.remove("show"); });
-  form.addEventListener("submit", function (e) {
+  form.addEventListener("submit", async function (e) {
     e.preventDefault();
+    if (submitting) return;
     var f = form.elements;
-    var missing = ["from", "to", "date", "name", "contact"].filter(function (k) { return !f[k].value.trim(); });
     status.hidden = false;
+    var missing = ["from", "to", "date", "name", "contact"].filter(function (k) { return !f[k].value.trim(); });
     if (missing.length) {
       status.className = "status err";
-      status.textContent = "Add your " + (missing.length > 1 ? "trip details and contact info" : (missing[0] === "contact" ? "phone or email" : missing[0] === "date" ? "departure date" : missing[0] === "name" ? "name" : "route")) + " and send it again.";
+      status.textContent = "Add your trip details and phone or email before sending.";
       f[missing[0]].focus();
       return;
     }
     if (!form.checkValidity()) {
       status.className = "status err";
-      status.textContent = "Choose today or a future departure date.";
+      status.textContent = "Check your trip details and choose today or a future departure date.";
       form.reportValidity();
       return;
     }
-    var body = [
-      "Route: " + f.from.value.trim() + " to " + f.to.value.trim(),
-      "Departure: " + f.date.value,
-      "Passengers: " + f.pax.value,
-      "Name: " + f.name.value.trim(),
-      "Contact: " + f.contact.value.trim(),
-      "",
-      "Anything else about the trip:"
-    ].join("\n");
+    var data = new FormData(form);
+    ["from", "to", "name", "contact", "details"].forEach(function (key) {
+      data.set(key, f[key].value.trim());
+    });
+    var contact = f.contact.value.trim();
+    if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact)) data.set("email", contact);
+    data.set("_subject", "Jet With Matt flight request: " + f.from.value.trim() + " to " + f.to.value.trim());
+    submitting = true;
+    submitButton.disabled = true;
+    submitButton.textContent = "Sending…";
+    form.setAttribute("aria-busy", "true");
     status.className = "status";
+    status.textContent = "Sending your flight request…";
     stamp.classList.remove("show");
-    void stamp.offsetWidth;
-    stamp.classList.add("show");
-    status.textContent = "Your email app is opening with the trip filled in. If it doesn't, email " + CONTACT_EMAIL + ".";
-    window.location.href = "mailto:" + CONTACT_EMAIL +
-      "?subject=" + encodeURIComponent("Charter quote: " + f.from.value.trim() + " to " + f.to.value.trim()) +
-      "&body=" + encodeURIComponent(body);
+    try {
+      var response = await fetch(form.action, {
+        method: "POST",
+        body: data,
+        headers: { "Accept": "application/json" }
+      });
+      var result = await response.json().catch(function () { return {}; });
+      if (!response.ok || result.error || (Array.isArray(result.errors) && result.errors.length)) {
+        throw new Error("The request could not be accepted.");
+      }
+      form.reset();
+      stamp.classList.add("show");
+      status.textContent = "Your flight request was sent. I’ll follow up with you directly.";
+    } catch (error) {
+      status.className = "status err";
+      status.textContent = "Your request could not be confirmed. Your details are still here. Please try again or email " + CONTACT_EMAIL + ".";
+    } finally {
+      submitting = false;
+      submitButton.disabled = false;
+      submitButton.textContent = "Request my quote";
+      form.removeAttribute("aria-busy");
+    }
   });
 
   // Motion: headline word rise and scroll reveals
