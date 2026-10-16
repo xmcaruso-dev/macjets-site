@@ -217,6 +217,19 @@ textarea { resize: vertical; min-height: 92px; }
 .status { margin: 12px 0 0; font-size: 15px; font-weight: 700; color: var(--blue); }
 .status[hidden] { display: none; }
 .err { color: #b3261e; }
+.chips { border: 0; padding: 0; margin: 14px 0 0; display: flex; gap: 8px; }
+.chips label { margin: 0; cursor: pointer; }
+.chips input { position: absolute; opacity: 0; width: 1px; height: 1px; min-height: 0; }
+.chips span { display: inline-block; padding: 8px 14px; border-radius: 999px; border: 1.5px solid var(--line); font-weight: 700; font-size: 14px; color: var(--ink-soft); }
+.chips input:checked + span { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.chips input:focus-visible + span { box-shadow: 0 0 0 3px rgba(31,86,214,.24); }
+.row > [hidden], .row[hidden] { display: none; }
+.consent { font-size: 12.5px; line-height: 1.45; }
+.consent a { color: inherit; }
+.jc-form { background: var(--white); border-radius: 20px; padding: 26px; box-shadow: 0 1px 0 var(--line), 0 24px 48px -24px rgba(16,36,58,.35); max-width: 560px; }
+.jc-form .jc-btn { border: 0; cursor: pointer; font: inherit; font-weight: 800; font-size: 17px; width: 100%; margin-top: 18px; }
+.jc-form .jc-btn:disabled { opacity: .65; cursor: wait; }
+@media (max-width: 480px) { .row { grid-template-columns: 1fr; } .jc-form { padding: 20px; } }
 
 /* Sections */
 section { padding: 88px 0; }
@@ -679,6 +692,7 @@ footer p { margin: 0 0 8px; max-width: 60em; }
 
     <form class="pass" id="quote" action="https://formspree.io/f/xdaboyel" method="POST">
       <input type="hidden" name="_subject" value="Jet With Matt flight request">
+      <input type="hidden" name="form" value="Flight quote">
       <div class="stamp" id="stamp" aria-hidden="true">Request received</div>
       <div class="pass-main">
         <div class="pass-head"><h2>Where to?</h2><span>Takes under a minute</span></div>
@@ -693,11 +707,21 @@ footer p { margin: 0 0 8px; max-width: 60em; }
             <input id="to" name="to" placeholder="City or airport" autocomplete="off" required>
           </div>
         </div>
+        <fieldset class="chips" aria-label="Trip type">
+          <label><input type="radio" name="trip_type" value="One way" checked><span>One way</span></label>
+          <label><input type="radio" name="trip_type" value="Round trip"><span>Round trip</span></label>
+        </fieldset>
         <div class="row">
           <div>
             <label for="date">Departure date</label>
             <input id="date" name="date" type="date" required>
           </div>
+          <div id="returnWrap" hidden>
+            <label for="return_date">Return date</label>
+            <input id="return_date" name="return_date" type="date" disabled>
+          </div>
+        </div>
+        <div class="row">
           <div>
             <label for="pax">Passengers</label>
             <select id="pax" name="pax">
@@ -706,27 +730,51 @@ footer p { margin: 0 0 8px; max-width: 60em; }
               <option>9 to 12</option><option>13 or more</option>
             </select>
           </div>
+          <div>
+            <label for="jet_size">Jet size</label>
+            <select id="jet_size" name="jet_size">
+              <option value="">Not sure</option><option>Light</option><option>Mid-size</option><option>Super-mid</option><option>Heavy</option>
+            </select>
+          </div>
         </div>
         <div class="row">
           <div>
-            <label for="name">Your name</label>
-            <input id="name" name="name" autocomplete="name" required>
+            <label for="frequency">I fly private</label>
+            <select id="frequency" name="frequency">
+              <option value="">Select</option><option>This is my first time</option><option>A few times a year</option><option>Monthly</option><option>Weekly or more</option>
+            </select>
           </div>
           <div>
-            <label for="contact">Phone or email</label>
-            <input id="contact" name="contact" autocomplete="email" required>
+            <label for="current">I fly with</label>
+            <select id="current" name="current">
+              <option value="">Select</option><option>Charter, trip by trip</option><option>A jet card</option><option>Fractional</option><option>My own aircraft</option><option>Commercial for now</option>
+            </select>
           </div>
         </div>
         <div style="margin-top: 14px;">
-          <label for="details">Trip details (optional)</label>
-          <textarea id="details" name="details" rows="3" placeholder="Return date, extra stops, luggage, pets, or special requests"></textarea>
+          <label for="name">Your name</label>
+          <input id="name" name="name" autocomplete="name" required>
+        </div>
+        <div class="row">
+          <div>
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email">
+          </div>
+          <div>
+            <label for="phone">Phone</label>
+            <input id="phone" name="phone" type="tel" autocomplete="tel">
+          </div>
+        </div>
+        <div style="margin-top: 14px;">
+          <label for="details">Anything else? (optional)</label>
+          <textarea id="details" name="details" rows="3" placeholder="Extra stops, luggage, pets, or special requests"></textarea>
         </div>
       </div>
       <div class="tear" aria-hidden="true"></div>
       <div class="pass-stub">
         <button class="btn" type="submit">Request my quote</button>
         <p class="status" id="status" role="status" hidden></p>
-        <p class="fine">Send your request here. I’ll follow up directly with options.</p>
+        <p class="fine consent">By submitting, you agree Matt Caruso may contact you by phone, text, or email about your request. Consent is not a condition of purchase. Msg &amp; data rates may apply; reply STOP to opt out. <a href="/privacy.html">Privacy policy</a></p>
       </div>
     </form>
   </div>
@@ -865,7 +913,54 @@ footer p { margin: 0 0 8px; max-width: 60em; }
     <div>
       <h2 class="big">Fly often? Ask about a jet card.</h2>
       <p class="jc-lede">A jet card lets you prepay for flying and book your trips against it, instead of starting from scratch on every flight. Terms differ by program, so I walk you through exactly what's included before you commit.</p>
-      <a class="jc-btn" id="jetCardLink" href="mailto:jetwithmatt@proton.me?subject=Jet%20card%20question">Ask about a jet card</a>
+      <form class="jc-form" id="jetcardForm" action="https://formspree.io/f/xdaboyel" method="POST" novalidate>
+        <input type="hidden" name="form" value="Jet card inquiry">
+        <div class="row" style="margin-top:0">
+          <div>
+            <label for="jc_hours">Flying per year</label>
+            <select id="jc_hours" name="jc_hours">
+              <option value="">Select</option><option>Under 25 hours</option><option>25 to 50 hours</option><option>50 to 100 hours</option><option>100+ hours</option><option>Not sure yet</option>
+            </select>
+          </div>
+          <div>
+            <label for="jc_current">I fly with</label>
+            <select id="jc_current" name="jc_current">
+              <option value="">Select</option><option>Charter, trip by trip</option><option>A jet card</option><option>Fractional</option><option>My own aircraft</option><option>Commercial for now</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-top: 14px;">
+          <label for="jc_routes">Typical routes</label>
+          <input id="jc_routes" name="jc_routes" placeholder="e.g. Fort Lauderdale to New York, Aspen in winter">
+        </div>
+        <div class="row" id="jcRenewWrap" hidden>
+          <div>
+            <label for="jc_program">Current program</label>
+            <input id="jc_program" name="jc_program" placeholder="Card, fractional, or operator">
+          </div>
+          <div>
+            <label for="jc_renewal">Renews or runs out</label>
+            <input id="jc_renewal" name="jc_renewal" type="month">
+          </div>
+        </div>
+        <div style="margin-top: 14px;">
+          <label for="jc_name">Your name</label>
+          <input id="jc_name" name="name" autocomplete="name" required>
+        </div>
+        <div class="row">
+          <div>
+            <label for="jc_email">Email</label>
+            <input id="jc_email" name="email" type="email" autocomplete="email">
+          </div>
+          <div>
+            <label for="jc_phone">Phone</label>
+            <input id="jc_phone" name="phone" type="tel" autocomplete="tel">
+          </div>
+        </div>
+        <button class="jc-btn" type="submit">Ask about a jet card</button>
+        <p class="status" id="jcStatus" role="status" hidden></p>
+        <p class="fine consent">By submitting, you agree Matt Caruso may contact you by phone, text, or email about your request. Consent is not a condition of purchase. Msg &amp; data rates may apply; reply STOP to opt out. <a href="/privacy.html">Privacy policy</a></p>
+      </form>
     </div>
     <div class="compare">
       <div>
@@ -940,7 +1035,7 @@ footer p { margin: 0 0 8px; max-width: 60em; }
     <p>Tell me where, when, and who's coming. I'll get back to you myself.</p>
     <div class="actions">
       <a class="btn-light" href="#quote">Request a quote</a>
-      <a class="btn-line" id="emailLink" href="mailto:jetwithmatt@proton.me?subject=Charter%20quote%20request">Email Matt</a>
+      <a class="btn-line" id="emailLink" href="mailto:jetwithmatt@gmail.com?subject=Charter%20quote%20request">Email Matt</a>
       <a class="btn-line" id="phoneLink" href="#" hidden>Call or text Matt</a>
     </div>
   </div>
@@ -949,7 +1044,7 @@ footer p { margin: 0 0 8px; max-width: 60em; }
 
 <footer>
   <div class="wrap">
-    <p><a href="/guides/">Private aviation guides</a></p>
+    <p><a href="/guides/">Private aviation guides</a> · <a href="/privacy.html">Privacy policy</a></p>
     <p class="foot-soc"><a href="https://www.instagram.com/jetwithmatt/" target="_blank" rel="noopener">Instagram</a><a href="https://www.tiktok.com/@jetwithmatt" target="_blank" rel="noopener">TikTok</a></p>
     <p>Jet with Matt is the personal brand of Matt Caruso, charter broker with jets.com. Fort Lauderdale, Florida.</p>
     <p>Charter flights are operated by FAA Part 135 certificated air carriers. Matt Caruso arranges charter as a broker and does not operate aircraft.</p>
@@ -959,85 +1054,132 @@ footer p { margin: 0 0 8px; max-width: 60em; }
 
 <script>
   // EDIT THESE TWO LINES. Leave PHONE empty to hide the call button.
-  var CONTACT_EMAIL = "jetwithmatt@proton.me";
+  var CONTACT_EMAIL = "jetwithmatt@gmail.com";
   var PHONE = "";
 
   var emailLink = document.getElementById("emailLink");
   emailLink.href = "mailto:" + CONTACT_EMAIL + "?subject=" + encodeURIComponent("Charter quote request");
-  document.getElementById("jetCardLink").href = "mailto:" + CONTACT_EMAIL +
-    "?subject=" + encodeURIComponent("Jet card question") +
-    "&body=" + encodeURIComponent("Hi Matt,\n\nI'm interested in a jet card. Here's roughly how often I fly and where:\n\nName:\nContact:");
   if (PHONE) {
     var p = document.getElementById("phoneLink");
     p.href = "tel:" + PHONE.replace(/[^0-9+]/g, "");
     p.hidden = false;
   }
 
-  // Block past dates
+  // Dates: no past departures, return on or after departure
   var dateEl = document.getElementById("date");
+  var retEl = document.getElementById("return_date");
+  var retWrap = document.getElementById("returnWrap");
   var t = new Date();
   dateEl.min = t.getFullYear() + "-" + String(t.getMonth() + 1).padStart(2, "0") + "-" + String(t.getDate()).padStart(2, "0");
-
-  var form = document.getElementById("quote");
-  var status = document.getElementById("status");
-  var stamp = document.getElementById("stamp");
-  var submitButton = form.querySelector('button[type="submit"]');
-  var submitting = false;
-  form.addEventListener("input", function () { stamp.classList.remove("show"); });
-  form.addEventListener("submit", async function (e) {
-    e.preventDefault();
-    if (submitting) return;
-    var f = form.elements;
-    status.hidden = false;
-    var missing = ["from", "to", "date", "name", "contact"].filter(function (k) { return !f[k].value.trim(); });
-    if (missing.length) {
-      status.className = "status err";
-      status.textContent = "Add your trip details and phone or email before sending.";
-      f[missing[0]].focus();
-      return;
-    }
-    if (!form.checkValidity()) {
-      status.className = "status err";
-      status.textContent = "Check your trip details and choose today or a future departure date.";
-      form.reportValidity();
-      return;
-    }
-    var data = new FormData(form);
-    ["from", "to", "name", "contact", "details"].forEach(function (key) {
-      data.set(key, f[key].value.trim());
+  retEl.min = dateEl.min;
+  dateEl.addEventListener("change", function () { retEl.min = dateEl.value || dateEl.min; });
+  Array.prototype.forEach.call(document.querySelectorAll('input[name="trip_type"]'), function (r) {
+    r.addEventListener("change", function () {
+      var round = document.querySelector('input[name="trip_type"]:checked').value === "Round trip";
+      retWrap.hidden = !round;
+      retEl.disabled = !round;
+      retEl.required = round;
     });
-    var contact = f.contact.value.trim();
-    if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact)) data.set("email", contact);
-    data.set("_subject", "Jet With Matt flight request: " + f.from.value.trim() + " to " + f.to.value.trim());
-    submitting = true;
-    submitButton.disabled = true;
-    submitButton.textContent = "Sending…";
-    form.setAttribute("aria-busy", "true");
-    status.className = "status";
-    status.textContent = "Sending your flight request…";
-    stamp.classList.remove("show");
-    try {
-      var response = await fetch(form.action, {
-        method: "POST",
-        body: data,
-        headers: { "Accept": "application/json" }
-      });
-      var result = await response.json().catch(function () { return {}; });
-      if (!response.ok || result.error || (Array.isArray(result.errors) && result.errors.length)) {
-        throw new Error("The request could not be accepted.");
+  });
+
+  // Jet card form: ask for program details only if they already fly on one
+  var jcCurrent = document.getElementById("jc_current");
+  var jcRenewWrap = document.getElementById("jcRenewWrap");
+  jcCurrent.addEventListener("change", function () {
+    jcRenewWrap.hidden = !/jet card|Fractional|own aircraft/i.test(jcCurrent.value);
+  });
+
+  function wireForm(form, opts) {
+    var status = document.getElementById(opts.statusId);
+    var btn = form.querySelector('button[type="submit"]');
+    var label = btn.textContent;
+    var submitting = false;
+    form.addEventListener("input", function () { if (opts.onInput) opts.onInput(); });
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      if (submitting) return;
+      var f = form.elements;
+      status.hidden = false;
+      var missing = opts.required.filter(function (k) { return !f[k].value.trim(); });
+      if (missing.length) {
+        status.className = "status err";
+        status.textContent = opts.missingMsg;
+        f[missing[0]].focus();
+        return;
       }
-      form.reset();
-      stamp.classList.add("show");
-      status.textContent = "Your flight request was sent. I’ll follow up with you directly.";
-    } catch (error) {
-      status.className = "status err";
-      status.textContent = "Your request could not be confirmed. Your details are still here. Please try again or email " + CONTACT_EMAIL + ".";
-    } finally {
-      submitting = false;
-      submitButton.disabled = false;
-      submitButton.textContent = "Request my quote";
-      form.removeAttribute("aria-busy");
-    }
+      var email = form.querySelector('input[type="email"]');
+      var phone = form.querySelector('input[type="tel"]');
+      if (!email.value.trim() && !phone.value.trim()) {
+        status.className = "status err";
+        status.textContent = "Add an email or phone number so I can reach you.";
+        email.focus();
+        return;
+      }
+      if (!form.checkValidity()) {
+        status.className = "status err";
+        status.textContent = opts.invalidMsg;
+        form.reportValidity();
+        return;
+      }
+      var data = new FormData(form);
+      Array.from(data.entries()).forEach(function (pair) {
+        if (typeof pair[1] === "string") data.set(pair[0], pair[1].trim());
+      });
+      data.set("_subject", opts.subject(f));
+      if (email.value.trim()) data.set("_replyto", email.value.trim());
+      submitting = true;
+      btn.disabled = true;
+      btn.textContent = "Sending…";
+      form.setAttribute("aria-busy", "true");
+      status.className = "status";
+      status.textContent = "Sending…";
+      try {
+        var response = await fetch(form.action, { method: "POST", body: data, headers: { "Accept": "application/json" } });
+        var result = await response.json().catch(function () { return {}; });
+        if (!response.ok || result.error || (Array.isArray(result.errors) && result.errors.length)) {
+          throw new Error("The request could not be accepted.");
+        }
+        form.reset();
+        if (opts.onReset) opts.onReset();
+        if (opts.onSuccess) opts.onSuccess();
+        status.textContent = opts.successMsg;
+      } catch (error) {
+        status.className = "status err";
+        status.textContent = "Your request could not be confirmed. Your details are still here. Please try again or email " + CONTACT_EMAIL + ".";
+      } finally {
+        submitting = false;
+        btn.disabled = false;
+        btn.textContent = label;
+        form.removeAttribute("aria-busy");
+      }
+    });
+  }
+
+  var stamp = document.getElementById("stamp");
+  wireForm(document.getElementById("quote"), {
+    statusId: "status",
+    required: ["from", "to", "date", "name"],
+    missingMsg: "Add your route, departure date, and name before sending.",
+    invalidMsg: "Check your dates and contact details. Departure has to be today or later.",
+    successMsg: "Your flight request was sent. I’ll follow up with you directly.",
+    subject: function (f) {
+      var tag = f.frequency.value ? " [" + f.frequency.value + (f.current.value ? ", " + f.current.value : "") + "]" : "";
+      return "Flight request: " + f.from.value.trim() + " to " + f.to.value.trim() + tag;
+    },
+    onInput: function () { stamp.classList.remove("show"); },
+    onReset: function () { retWrap.hidden = true; retEl.disabled = true; retEl.required = false; },
+    onSuccess: function () { stamp.classList.add("show"); }
+  });
+  wireForm(document.getElementById("jetcardForm"), {
+    statusId: "jcStatus",
+    required: ["name"],
+    missingMsg: "Add your name before sending.",
+    invalidMsg: "Check your email or phone and try again.",
+    successMsg: "Got it. I’ll follow up with you directly.",
+    subject: function (f) {
+      return "Jet card inquiry: " + (f.name.value.trim()) + (f.jc_hours.value ? " [" + f.jc_hours.value + "]" : "");
+    },
+    onReset: function () { jcRenewWrap.hidden = true; }
   });
 
   // Motion: headline word rise and scroll reveals
